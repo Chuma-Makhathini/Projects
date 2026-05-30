@@ -7,7 +7,7 @@ ABC Retails is a comprehensive e-commerce platform consisting of two main applic
 
 ## Project Overview
 
-This project implements a complete retail management system with product catalog, shopping cart, order management, and cloud-based serverless backend functionality. The architecture follows a microservices pattern with a web interface and cloud-native processing capabilities.
+This project implements a complete retail management system with product catalog, shopping cart, order management, and cloud-based serverless backend functionality. The architecture follows a microservices pattern using Azure cloud services for scalability and reliability.
 
 ### Technology Stack
 
@@ -677,10 +677,7 @@ For questions or issues:
 
 ## License
 
-This project is provided as-is for educational and commercial purposes.
-
-**Course**: CLDV6212 - Part 3  
-**Student ID**: ST10450570
+This project is provided as-is for professional use in retail e-commerce applications.
 
 ---
 
