@@ -1,0 +1,199 @@
+﻿@model EventEase.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .hero {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 1rem;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .card-custom:hover {
+            transform: translateY(-4px);
+        }
+
+    .section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1.2rem;
+        color: #111827;
+    }
+
+    .badge-status {
+        font-size: 0.75rem;
+        padding: 0.35em 0.75em;
+        border-radius: 1rem;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background-color: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-completed {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-cancelled {
+        background-color: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .text-muted-sm {
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+
+    .rounded-image {
+        border-radius: 0.75rem;
+        object-fit: cover;
+        width: 100%;
+        height: 180px;
+    }
+</style>
+
+<div class="hero">
+    <h1 class="display-5 fw-bold">Welcome to EventEase</h1>
+    <p class="lead">Your simplified hub for managing bookings, events, and venues.</p>
+</div>
+
+<div class="container">
+    <div class="row gy-4">
+        <!-- Recent Bookings -->
+        <div class="col-lg-8">
+            <div class="card card-custom p-4">
+                <h2 class="section-title">Recent Bookings</h2>
+                @if (Model.RecentBookings.Any())
+                {
+                    @foreach (var booking in Model.RecentBookings)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">@booking.Event?.EventName</h5>
+                                    <div class="text-muted-sm">@booking.Venue?.VenueName</div>
+                                </div>
+                                <span class="badge-status @GetStatusClass(booking.Status)">
+                                    @booking.Status
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-1 align-items-center">
+                                <span class="text-muted-sm">
+                                    <i class="far fa-calendar-alt me-1"></i> @booking.BookingDate.ToString("MMMM dd, yyyy")
+                                </span>
+                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.BookingId" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                            <hr />
+                        </div>
+                    }
+                    <div class="text-end">
+                        <a asp-controller="Booking" asp-action="Index" class="btn btn-primary">View All Bookings</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">No recent bookings available.</div>
+                }
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-lg-4">
+            <!-- Upcoming Events -->
+            <div class="card card-custom p-4 mb-4">
+                <h2 class="section-title">Upcoming Events</h2>
+                @if (Model.FutureEvents.Any())
+                {
+                    @foreach (var item in Model.FutureEvents)
+                    {
+                        <div class="mb-3">
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@item.EventId" class="text-decoration-none text-dark">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">@item.EventName</h6>
+                                        <small class="text-muted-sm">@item.Venue?.VenueName</small>
+                                    </div>
+                                    <small class="text-muted-sm">@item.EventDate.ToString("MMM dd, yyyy")</small>
+                                </div>
+                                @if (item.EventType != null)
+                                {
+                                    <small class="text-primary">@item.EventType.EventTypeName</small>
+                                }
+                            </a>
+                            <hr />
+                        </div>
+                    }
+                    <div class="text-end">
+                        <a asp-controller="Event" asp-action="Index" class="btn btn-outline-primary">View All Events</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">No upcoming events.</div>
+                }
+            </div>
+
+            <!-- Featured Venues -->
+            <div class="card card-custom p-4">
+                <h2 class="section-title">Featured Venues</h2>
+                @if (Model.FeaturedVenues.Any())
+                {
+                    @foreach (var venue in Model.FeaturedVenues)
+                    {
+                        <a asp-controller="Venue" asp-action="Details" asp-route-id="@venue.VenueId" class="text-decoration-none text-dark">
+                            <div class="mb-3">
+                                <h6 class="mb-1">@venue.VenueName</h6>
+                                <small class="text-muted-sm">@venue.Location | Capacity: @venue.Capacity</small><br />
+                                @if (venue.Availability)
+                                {
+                                    <small class="text-success">Available</small>
+                                }
+                                else
+                                {
+                                    <small class="text-danger">Unavailable</small>
+                                }
+                            </div>
+                        </a>
+                        <hr />
+                    }
+                    <div class="text-end">
+                        <a asp-controller="Venue" asp-action="Index" class="btn btn-outline-primary">View All Venues</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">No featured venues right now.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "active" => "status-active",
+            "completed" => "status-completed",
+            "cancelled" => "status-cancelled",
+            _ => ""
+        };
+    }
+}
