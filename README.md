@@ -55,9 +55,6 @@ Welcome to my GitHub! I am a Computer Science student based in Johannesburg, Gau
 **Cybersecurity Awareness Chatbot**: Engineered an interactive desktop assistant utilizing NLP simulation and OOP principles to educate users on safe browsing.
 
 
-* 
-**EasyKanban**: Developed a feature-rich Java Kanban board implementing user authentication and full CRUD task management.
-
 
 
 #### 📫 Let's Connect
